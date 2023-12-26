@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Nodes</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center my-12">Register a New Node</h1>
+        <div class="max-w-md mx-auto">
+            <form id="registerNodeForm" class="bg-white p-8 mb-6 rounded-lg shadow-lg">
+                <div class="mb-4">
+                    <label for="nodeAddress" class="block text-gray-700 text-sm font-bold mb-2">Node Address:</label>
+                    <input type="text" id="nodeAddress" name="nodeAddress" placeholder="e.g., http://127.0.0.1:5000" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register Node</button>
+                </div>
+                <div id="nodeRegistrationStatus" class="mt-4"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registerNodeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const nodeAddress = document.getElementById('nodeAddress').value;
+            const statusDiv = document.getElementById('nodeRegistrationStatus');
+
+            fetch('/nodes/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nodes: [nodeAddress] }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                statusDiv.textContent = data.message || 'Node registered successfully.';
+                statusDiv.className = 'text-green-500';
+                document.getElementById('nodeAddress').value = ''; // Clear the input field
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                statusDiv.textContent = 'Error occurred while registering the node.';
+                statusDiv.className = 'text-red-500';
+            });
+        });
+    </script>
+</body>
+</html>

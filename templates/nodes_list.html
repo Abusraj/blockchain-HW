@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Nodes</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center my-12">Registered Nodes</h1>
+        <div class="bg-white shadow overflow-hidden sm:rounded-md">
+            <ul class="divide-y divide-gray-200">
+                {% for node in nodes %}
+                    <li class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm font-medium text-gray-900">
+                                {{ node }}
+                            </div>
+                            <div class="ml-2 flex-shrink-0 flex">
+                                <a href="http://{{ node }}" target="_blank" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">
+                                    Visit
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Blockchain</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center my-12">Blockchain Details</h1>
+        <div id="blockchainContent" class="space-y-4">
+            <!-- Dynamic content will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Fetch blockchain data from the server
+        fetch('/get_blockchain')
+            .then(response => response.json())
+            .then(data => {
+                const blockchainContent = document.getElementById('blockchainContent');
+                data.chain.forEach(block => {
+                    const blockElement = document.createElement('div');
+                    blockElement.className = 'bg-white p-6 rounded-lg shadow-md';
+    
+                    let transactionsHTML = '<div class="mt-4">';
+                    if(block.transactions.length === 0) {
+                        transactionsHTML += '<p>No transactions in this block.</p>';
+                    } else {
+                        block.transactions.forEach(transaction => {
+                            transactionsHTML += `
+                                <div class="border-b mb-2 pb-2">
+                                    <p>Sender: ${transaction.sender}</p>
+                                    <p>Recipient: ${transaction.recipient}</p>
+                                    <p>Amount: ${transaction.amount}</p>
+                                </div>
+                            `;
+                        });
+                    }
+                    transactionsHTML += '</div>'; // Close the transactions container div
+    
+                    blockElement.innerHTML = `
+                        <h2 class="text-xl font-bold mb-2">Block ${block.index}</h2>
+                        <p><strong>Nonce:</strong> ${block.nonce}</p>
+                        <p><strong>Current Hash:</strong> ${block.Current_hash || 'None'}</p>
+                        <p><strong>Timestamp:</strong> ${new Date(block.timestamp * 1000).toLocaleString()}</p>
+                        <p><strong>Previous Hash:</strong> ${block.hash_of_previous_block || 'None'}</p>
+                        <p><strong>Transactions:</strong> ${block.transactions.length}</p>
+                        ${transactionsHTML}
+                    `;
+                    blockchainContent.appendChild(blockElement);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+    
+</body>
+</html>

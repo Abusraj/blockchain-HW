@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .flex-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .flex-container button {
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center my-12">Blockchain Dashboard</h1>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-white p-6 rounded-lg shadow-md flex-container">
+                <h2 class="text-2xl font-bold mb-2">View Blockchain</h2>
+                <p>View the current state of the blockchain.</p>
+                <button onclick="window.location.href='/blockchain'" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">View Blockchain</button>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md flex-container">
+                <h2 class="text-2xl font-bold mb-2">Mine a Block</h2>
+                <p>Mine a new block for the blockchain.</p>
+                <button onclick="window.location.href='/mine-page'" class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 ">Mine Block</button>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md flex-container">
+                <h2 class="text-2xl font-bold mb-2">New Transaction</h2>
+                <p>Create a new transaction to be added to the next block.</p>
+                <button onclick="window.location.href='/transactions/new'" class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700">New Transaction</button>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md flex-container">
+                <h2 class="text-2xl font-bold mb-2">Register Node</h2>
+                <p>Add a new node to the network.</p>
+                <button onclick="window.location.href='/nodes/register'" class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Register Node</button>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md flex-container">
+                <h2 class="text-2xl font-bold mb-2">Registered Nodes</h2>
+                <p>View the list of nodes registered in the network.</p>
+                <button onclick="window.location.href='/nodes/list'" class="mt-4 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700">View Nodes</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

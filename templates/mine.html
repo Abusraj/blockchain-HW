@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta viewport="width=device-width, initial-scale=1.0">
+    <title>Mine a Block</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center my-12">Mine a New Block</h1>
+        <div class="text-center">
+            <button id="mineButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Mine Block
+            </button>
+            <div id="miningStatus" class="mt-4"></div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('mineButton').addEventListener('click', function() {
+            const statusDiv = document.getElementById('miningStatus');
+            statusDiv.innerHTML = '<p class="text-blue-600">Mining in progress...</p>';
+    
+            fetch('/mine')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === "New Block Mined") {
+                        statusDiv.innerHTML = `
+                            <p class="text-green-600 font-bold">Block Successfully Mined!</p>
+                            <div class="bg-white p-6 mt-4 rounded-lg shadow-md">
+                                <h2 class="text-xl font-bold mb-2">Block Details</h2>
+                                <p><strong>Current Hash:</strong> ${data.Current_hash || 'None'}</p>
+                                <p><strong>Index:</strong> ${data.index}</p>
+                                <p><strong>Nonce:</strong> ${data.nonce}</p>
+                                <p><strong>Previous Hash:</strong> ${data.hash_of_previous_block}</p>
+                                <p><strong>Transactions:</strong> ${data.transactions.length}</p>
+                            </div>
+                        `;
+                    } else {
+                        statusDiv.innerHTML = '<p class="text-red-600">Error: ' + data.message + '</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    statusDiv.innerHTML = '<p class="text-red-600">Error occurred while mining the block.</p>';
+                });
+        });
+    </script>    
+</body>
+</html>

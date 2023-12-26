@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Transaction</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center my-12">Create a New Transaction</h1>
+        <div class="max-w-md mx-auto">
+            <form id="transactionForm" class="bg-white p-8 mb-6 rounded-lg shadow-lg">
+                <div class="mb-4">
+                    <label for="sender" class="block text-gray-700 text-sm font-bold mb-2">Sender:</label>
+                    <input type="text" id="sender" name="sender" required
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="recipient" class="block text-gray-700 text-sm font-bold mb-2">Recipient:</label>
+                    <input type="text" id="recipient" name="recipient" required
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="amount" class="block text-gray-700 text-sm font-bold mb-2">Amount:</label>
+                    <input type="number" id="amount" name="amount" required min="1" step="any"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="flex items-center justify-between">
+                    <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit
+                        Transaction</button>
+                </div>
+                <div id="transactionStatus" class="mt-4"></div>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById('transactionForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const sender = document.getElementById('sender').value;
+            const recipient = document.getElementById('recipient').value;
+            const amount = document.getElementById('amount').value;
+            const statusDiv = document.getElementById('transactionStatus');
+
+            fetch('/transactions/new', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ sender, recipient, amount }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    statusDiv.textContent = data.message || 'Transaction submitted successfully.';
+                    statusDiv.className = 'text-green-500';
+                    // Clear the form fields
+                    document.getElementById('sender').value = '';
+                    document.getElementById('recipient').value = '';
+                    document.getElementById('amount').value = '';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    statusDiv.textContent = error.message || 'Error occurred while submitting the transaction.';
+                    statusDiv.className = 'text-red-500';
+                });
+        });
+
+    </script>
+</body>
+
+</html>
